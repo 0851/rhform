@@ -68,8 +68,8 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
   initialValues: T
   names: Record<string, number>
   errors: Record<string, ValidResult>
-  validStacks: Record<string, Promise<boolean>[]>
-  validLoadings: Record<string, number>
+  validStacks: Record<string, Promise<any>[]>
+  validLoadings: Record<string, boolean>
   constructor (
     public store: T,
     public changed: React.Dispatch<React.SetStateAction<Partial<T>>>,
@@ -136,60 +136,75 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
     this.changed({ ...this.store })
   }
   setLoading (name: string): void {
-    this.validLoadings[name] = (this.validLoadings[name] || 0) + 1
+    this.validLoadings[name] = true
   }
   unsetLoading (name: string): void {
-    this.validLoadings[name] = (this.validLoadings[name] || 0) - 1
+    this.validLoadings[name] = false
   }
   isLoading (name: string): boolean {
-    return this.validLoadings[name] > 0
+    return !!this.validLoadings[name]
   }
-  private async fntimeout (name: string, fn: Promise<boolean>) {
-    return PromiseTimeout<boolean>(fn, 5000).finally(() => {
-      this.unsetLoading(name)
-      setTimeout(() => {
-        this.validStacks[name] = remove(this.validStacks[name], fn)
+  private async fnTimeOut<T extends any> (value: Promise<T>, fn: any, time: number) {
+    let res: any = PromiseTimeout<T>(fn, time).catch((e) => { throw e })
+    res.id = Math.random()
+    res.value = value
+    return res
+  }
+  private async runLast (name: string, v: any, validators: nameValidators[]): Promise<undefined | boolean> {
+    this.validStacks[name] = this.validStacks[name] || []
+    let pt = this.fnTimeOut(v, this.validByName(v, validators), 3000)
+    this.validStacks[name].unshift(pt)
+    let getLast = () => (this.validStacks[name] || [])[0]
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        let last: Promise<boolean> = getLast()
+        this.setLoading(name)
+        if (!last) {
+          resolve(undefined)
+        }
+        let res: any = await last
+        if (getLast() === last) {
+          this.unsetLoading(name)
+          this.validStacks[name] = []
+          if (res === true) {
+            this.unsetError(name)
+            resolve(res)
+          } else {
+            let message = isString(res) ? res : res?.message
+            this.setError(name, `${message}`)
+            reject(res)
+          }
+        }
       })
     })
   }
-  private async runlast (name: string): Promise<undefined | boolean> {
-    try {
-      let last: Promise<boolean> = (this.validStacks[name] || [])[0]
-      if (!last) {
-        return
-      }
-      let res = await last
-      this.unsetError(name)
-      return res
-    } catch (error) {
-      let message = isString(error) ? error : error?.message
-      this.setError(name, `${message}`)
-      throw error
-    }
-  }
-  private async validbyname (validators: nameValidators[]): Promise<boolean> {
+  private async validByName (value: any, validators: nameValidators[]): Promise<boolean> {
     try {
       await Promise.all(validators.map(async (v) => {
-        let res = await v.validator(
-          this.get(v.name),
-          v.opt,
-          {
-            data: this.store,
-            rules: this.rules,
-            form: this
+        try {
+          let res = await v.validator(
+            value,
+            v.opt,
+            {
+              data: this.store,
+              rules: this.rules,
+              form: this
+            }
+          )
+          if (res === false) {
+            throw new Error(`${name} error`)
+          } else if (res === true || res === undefined || res === null) {
+            return true
+          } else {
+            throw res
           }
-        )
-        if (res === false) {
-          throw new Error(`${name} error`)
-        } else if (res === true) {
-          return true
-        } else {
-          throw res
+        } catch (error) {
+          throw error
         }
       }))
       return true
     } catch (error) {
-      throw error
+      return error
     }
   }
   validate = debounce(async (name?: string, refresh?: boolean, silent?: boolean): Promise<ValidResult> => {
@@ -197,25 +212,19 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
       if (!name) return true
       return item === name
     })
-    let validsall = names.map(async (name) => {
-      let rule = this.rules[name]
-      let validators: nameValidators[] = []
-      getValidatorFn(validators, name, rule)
-      this.validbyname(validators)
+    let validAll = names.map((name) => {
       try {
-        return
+        let rule = this.rules[name]
+        let validators: nameValidators[] = []
+        let v = this.get(name)
+        getValidatorFn(validators, name, rule)
+        return this.runLast(name, v, validators)
       } catch (error) {
-        let message = isString(error) ? error : error?.message
-        this.setError(name, `${message}`)
         throw error
       }
-      // this.validStacks[v.name] = this.validStacks[v.name] || []
-      // this.validStacks[v.name].unshift(fn)
-      // this.setLoading(v.name)
-      // await this.runlast(name)
     })
     try {
-      await Promise.all(validsall)
+      await Promise.all(validAll)
       return true
     } catch (error) {
       let message = isString(error) ? error : error?.message
@@ -228,7 +237,7 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
         this.refresh()
       }
     }
-  }, 66, { leading: true, trailing: true })
+  }, 88, { leading: true, trailing: true })
   setError (name: string, msg: string): void {
     lodashSet(this.errors, `${name}`, msg)
   }

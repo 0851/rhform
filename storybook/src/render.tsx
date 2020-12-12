@@ -15,7 +15,7 @@ export function render (store: FormStoreInstance, onReset?: any, onSubmit?: any)
       error={store.error('contact.phone')}
       label='username'
     >
-      <Form.Field type='text' name="contact.phone" rule={{ fn: 'required' }} />
+      <Form.Field type='text' name="contact.phone" rule={{ fn: 'required' }} loadingAs="loading..." />
       {store.get('contact.phone')}
     </Form.Item>
     <Form.Item required={boolean('RequiredRadioCheckbox', false)} label='radio checkbox'

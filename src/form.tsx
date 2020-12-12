@@ -35,6 +35,25 @@ export function Form (props: FormProps) {
 
   const classNames = [componentName, className].filter(n => !!n).join(' ')
 
+  const newOnSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e && e.preventDefault()
+    e.stopPropagation()
+    console.log('======', store, '===')
+    try {
+      if (onSubmit) {
+        await store.validate()
+        onSubmit && onSubmit(e)
+      }
+    } catch (error) { }
+  }
+
+  const newOnReset = (e: React.FormEvent<HTMLFormElement>): void => {
+    e && e.preventDefault();
+    console.log('=====reset====', store, '===')
+    store.reset()
+    onReset && onReset(e)
+  }
+
   return (
     <FormStoreContext.Provider value={{ store, opts }}>
       {
@@ -43,8 +62,8 @@ export function Form (props: FormProps) {
             as === 'form' ?
               React.createElement('form', {
                 className: classNames,
-                onSubmit: onSubmit,
-                onReset: onReset,
+                onSubmit: newOnSubmit,
+                onReset: newOnReset,
                 ...options
               }, children)
               :

@@ -30,7 +30,7 @@ export interface FormStoreInstance<T extends Object = any> {
   names: Record<string, number>;
   errors: Record<string, ValidResult>;
   validStacks: Record<string, (Promise<ValidResult> | ValidResult)[]>;
-  validLoadings: Record<string, number>
+  validLoadings: Record<string, boolean>
   addName (name: string): void;
   removeName (name: string): void;
   addRule (name: string, newRule: Rule): void;

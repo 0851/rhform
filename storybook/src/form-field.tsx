@@ -41,6 +41,10 @@ class App extends React.Component {
       {
         'contact.phone': {
           fn (v) {
+            // if (v === 'as') {
+            //   return 'error这是一个错误'
+            // }
+            // return true
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 if (v === 'as') {
@@ -70,11 +74,23 @@ class App extends React.Component {
   };
   render () {
     return <div>
-      <input type='text' value={this.state.aaa} onChange={(e) => {
-        this.setState({
-          aaa: e.target.value
-        })
-      }} />
+      <form onSubmit={(e) => { console.log(e); e.preventDefault() }}>
+        <input type='text' value={this.state.aaa} onChange={(e) => {
+          this.setState({
+            aaa: e.target.value
+          })
+        }} />
+        <input type='text' value={this.state.aaa} onChange={(e) => {
+          this.setState({
+            aaa: e.target.value
+          })
+        }} />
+        <input type='text' value={this.state.aaa} onChange={(e) => {
+          this.setState({
+            aaa: e.target.value
+          })
+        }} />
+      </form>
       {this.state.aaa}
       {render(this.store, this.onReset, this.onSubmit)}
     </div>

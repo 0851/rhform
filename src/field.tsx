@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback, useState } from 'react'
 import {
   defaultTo,
   has,
@@ -47,8 +47,20 @@ export function FormField (props: FormFieldProps) {
 
   useEffect(() => {
     store?.addName && (store?.addName(name))
+    if (rule) {
+      let rules = Array.isArray(rule) ? rule : [rule]
+      rules.forEach((rule) => {
+        store?.addRule(name, rule)
+      })
+    }
     return () => {
       store?.removeName && (store?.removeName(name))
+      if (rule) {
+        let rules = Array.isArray(rule) ? rule : [rule]
+        rules.forEach((rule) => {
+          store?.removeRule(name, rule)
+        })
+      }
     }
   }, [name])
 
@@ -74,13 +86,6 @@ export function FormField (props: FormFieldProps) {
     return React.createElement(as, newProps, children)
   }
 
-  if (rule) {
-    let rules = Array.isArray(rule) ? rule : [rule]
-    rules.forEach((rule) => {
-      store.addRule(name, rule)
-    })
-  }
-
   if (!(has(props, 'value') && valueKey === 'value')) {
     let initValue = multiple === true ? [] : ''
     let currentValue = store.has(name) ? store.get(name) : defaultTo(value, initValue);
@@ -92,7 +97,11 @@ export function FormField (props: FormFieldProps) {
     newProps['checked'] = Array.isArray(v) ? (v.indexOf(value) >= 0) : (v === value)
   }
 
+  // TODO 任意事件会重新执行, 值会被重设为默认值, 需要解决
+  console.log('=+++====')
+
   let onChange = useCallback((e: ChangeEvent) => {
+    console.log(e, '=====')
     let v = valueGetter ? valueGetter(e, store, props) : defaultValueGetter(e, store, props);
     store.set(name, v)
     if (validateTrigger !== 'onChange') {
@@ -110,6 +119,14 @@ export function FormField (props: FormFieldProps) {
       } catch (error) { }
     }
   }
+
   newProps.onChange = onChange
+
+  // let [s, sets] = useState('')
+  // newProps.value = s
+  // newProps.onChange = (e: any) => {
+  //   sets(e.target.value)
+  // }
+
   return <>{React.createElement(as, newProps, children)}{store.isLoading(name) && loadingAs ? loadingAs : undefined}</>
 }
