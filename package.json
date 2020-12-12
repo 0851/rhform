@@ -1,0 +1,59 @@
+{
+  "name": "rhform",
+  "version": "0.0.1",
+  "description": "React component Form",
+  "keywords": [
+    "react",
+    "component",
+    "form"
+  ],
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "unpack": "lib/umd/index.js",
+  "types": "lib/index.d.ts",
+  "style": "lib/index.css",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rollup --compact -c && tsc --emitDeclarationOnly"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/lodash-es": "^4.17.3",
+    "@types/react": "^16.8.20",
+    "less": "^3.10.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rollup": "^1.19.4",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "async-validator": "^3.5.1",
+    "lodash-es": "^4.17.15"
+  },
+  "browserslist": [
+    "last 3 and_chr versions",
+    "last 3 chrome versions",
+    "last 3 opera versions",
+    "last 3 ios_saf versions",
+    "last 3 safari versions"
+  ]
+}
