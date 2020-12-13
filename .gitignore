@@ -1,5 +1,4 @@
 stories/build/
 node_modules/
-lib/
 
 *.log

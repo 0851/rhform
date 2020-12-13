@@ -1,0 +1,39 @@
+.rhform-field {
+  margin-bottom: 20px;
+  line-height: 32px;
+  display: block;
+}
+.rhform-field::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.rhform-field__label {
+  line-height: 32px;
+  float: left;
+}
+.rhform-field__container {
+  position: relative;
+}
+.rhform-field__message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-size: 12px;
+  color: red;
+  line-height: 20px;
+}
+.rhform-field__footer {
+  width: 100%;
+}
+.rhform-field.rhform-field--inline {
+  display: inline-block;
+  vertical-align: top;
+}
+.rhform-field.rhform-field--required .rhform-field__label::before {
+  display: inline-block;
+  content: '*';
+  color: red;
+  margin-right: 3px;
+  vertical-align: middle;
+}
