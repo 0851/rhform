@@ -400,8 +400,8 @@ props
 | value | any | '' | value | false |
 | multiple | boolean | '' | multiple | false |
 | rule | `Rule ; Rule[]` | '' | rule | false |
-| validateTrigger | `'onChange' | 'onBlur' | string` | 'onChange' | validateTrigger | false |
-| validateTrigger | `'onChange' | 'onBlur' | string` | 'onChange' | validateTrigger | false |
+| validateTrigger | `'onChange' ; 'onBlur' ; string` | 'onChange' | validateTrigger | false |
+| validateTrigger | `'onChange' ; 'onBlur' ; string` | 'onChange' | validateTrigger | false |
 
 
 ---
