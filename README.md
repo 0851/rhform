@@ -354,7 +354,7 @@ props
 | className | string | '' | class name | false |
 | children | React.ReactNode | '' | children | false |
 | store | FormStoreInstance | '' | store instance | true |
-| as | `React.ComponentType<any> | string | React.ComponentType | React.ForwardRefExoticComponent<any>` | 'form' | native element | false |
+| as | `React.ComponentType<any>;string;React.ComponentType;React.ForwardRefExoticComponent<any>` | 'form' | native element | false |
 
 events
 
@@ -390,16 +390,16 @@ props
 
 | name | type | default | description | required |
 | --- | --- | --- | --- | --- |
-| as | `'input' | 'select' | 'textarea'| FunctionComponent<P> | ComponentClass<P> | string` | 'input' | native element | false |
+| as | `'input';'select';'textarea';FunctionComponent<P>;ComponentClass<P>;string` | 'input' | native element | false |
 | children | React.ReactNode | '' | children | false |
 | name | string | '' | name | true |
 | valueKey | string | '' | valueKey | false |
 | valueGetter | ValueGetter | '' | ValueGetter | false |
-| loadingAs | `FunctionComponent<any> | ComponentClass<any> | string` | '' | loading native element | false |
+| loadingAs | `FunctionComponent<any> ; ComponentClass<any> ; string` | '' | loading native element | false |
 | type | string | '' | type | false |
 | value | any | '' | value | false |
 | multiple | boolean | '' | multiple | false |
-| rule | `Rule | Rule[]` | '' | rule | false |
+| rule | `Rule ; Rule[]` | '' | rule | false |
 | validateTrigger | `'onChange' | 'onBlur' | string` | 'onChange' | validateTrigger | false |
 | validateTrigger | `'onChange' | 'onBlur' | string` | 'onChange' | validateTrigger | false |
 
