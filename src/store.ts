@@ -133,6 +133,7 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
     }
   }
   refresh () {
+    // console.log(JSON.stringify(this.store), '====store');
     this.changed({ ...this.store })
   }
   setLoading (name: string): void {

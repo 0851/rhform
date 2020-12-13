@@ -33,13 +33,12 @@ class App extends React.Component {
     this.store = new FormStore(
       this.state.store,
       (value) => {
-        // console.log(value)
         this.setState({
           store: value
         })
       },
       {
-        'contact.phone': {
+        'username': {
           fn (v) {
             // if (v === 'as') {
             //   return 'error这是一个错误'
@@ -60,21 +59,15 @@ class App extends React.Component {
     )
   }
   onReset = e => {
-    e.preventDefault();
-    this.store.reset()
+    console.log(JSON.stringify(this.store), 'reseted')
   }
   onSubmit = async e => {
-    e.preventDefault();
-    try {
-      const values = await this.store.validate()
-      console.log('values:', values)
-    } catch (error) {
-      console.log('error:', error)
-    }
+    console.log(JSON.stringify(this.store), 'submited')
   };
   render () {
+    // console.log(this.store, '======')
     return <div>
-      <form onSubmit={(e) => { console.log(e); e.preventDefault() }}>
+      <form onSubmit={(e) => { console.log(e); e.preventDefault() }} onReset={() => { console.log('==reset==') }}>
         <input type='text' value={this.state.aaa} onChange={(e) => {
           this.setState({
             aaa: e.target.value
@@ -90,6 +83,8 @@ class App extends React.Component {
             aaa: e.target.value
           })
         }} />
+        <button type="button" onClick={() => { console.log('=111===') }}>Rese111t</button>
+        <button type="reset" onClick={() => { console.log('====') }}>Reset22</button>
       </form>
       {this.state.aaa}
       {render(this.store, this.onReset, this.onSubmit)}

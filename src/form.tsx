@@ -36,9 +36,7 @@ export function Form (props: FormProps) {
   const classNames = [componentName, className].filter(n => !!n).join(' ')
 
   const newOnSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e && e.preventDefault()
-    e.stopPropagation()
-    console.log('======', store, '===')
+    e.preventDefault()
     try {
       if (onSubmit) {
         await store.validate()
@@ -48,8 +46,7 @@ export function Form (props: FormProps) {
   }
 
   const newOnReset = (e: React.FormEvent<HTMLFormElement>): void => {
-    e && e.preventDefault();
-    console.log('=====reset====', store, '===')
+    e.preventDefault();
     store.reset()
     onReset && onReset(e)
   }

@@ -20,7 +20,7 @@ function App () {
       }
     },
     {
-      'contact.phone': {
+      'username': {
         fn (v) {
           return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -43,20 +43,14 @@ function App () {
     }
   )
 
+  // console.log(store, '===+++==')
+
   const onReset = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    // console.log(store)
-    store.reset()
+    console.log(JSON.stringify(store), 'reseted')
   }, [])
 
   const onSubmit = React.useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    try {
-      const values = await store.validate()
-      console.log('values:', values)
-    } catch (error) {
-      console.log('error:', error)
-    }
+    console.log(JSON.stringify(store), 'submit')
   }, [])
 
   return (

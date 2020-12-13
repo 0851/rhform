@@ -97,11 +97,7 @@ export function FormField (props: FormFieldProps) {
     newProps['checked'] = Array.isArray(v) ? (v.indexOf(value) >= 0) : (v === value)
   }
 
-  // TODO 任意事件会重新执行, 值会被重设为默认值, 需要解决
-  console.log('=+++====')
-
   let onChange = useCallback((e: ChangeEvent) => {
-    console.log(e, '=====')
     let v = valueGetter ? valueGetter(e, store, props) : defaultValueGetter(e, store, props);
     store.set(name, v)
     if (validateTrigger !== 'onChange') {

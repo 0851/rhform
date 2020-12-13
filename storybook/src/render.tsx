@@ -5,6 +5,8 @@ export function render (store: FormStoreInstance, onReset?: any, onSubmit?: any)
   return <Form
     as="form"
     store={store}
+    onSubmit={onSubmit}
+    onReset={onReset}
     inline={boolean('Inline', false)}
     labelWidth={number('Label Width', 120)}
     labelAlign={select('labelAlign', ['left', 'right', 'center'], 'left')}
@@ -12,11 +14,11 @@ export function render (store: FormStoreInstance, onReset?: any, onSubmit?: any)
   >
     <Form.Item
       required={boolean('RequiredName', true)}
-      error={store.error('contact.phone')}
+      error={store.error('username')}
       label='username'
     >
-      <Form.Field type='text' name="contact.phone" rule={{ fn: 'required' }} loadingAs="loading..." />
-      {store.get('contact.phone')}
+      <Form.Field type='text' name="username" rule={{ fn: 'required' }} loadingAs="loading..." />
+      {store.get('username')}
     </Form.Item>
     <Form.Item required={boolean('RequiredRadioCheckbox', false)} label='radio checkbox'
       error={store.error('radio')}>
@@ -71,8 +73,9 @@ export function render (store: FormStoreInstance, onReset?: any, onSubmit?: any)
       {store.get('Address')}
     </Form.Item>
     <Form.Item label=''>
-      <button onClick={onReset}>Reset</button>
-      <button onClick={onSubmit}>Submit</button>
+      <button type="button" onClick={() => { console.log('===button click==') }}>Button</button>
+      <button type="submit" >Submit</button>
+      <button type="reset" >Reset</button>
     </Form.Item>
   </Form>
 }
