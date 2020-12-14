@@ -107,6 +107,9 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
   }
   reset (): void {
     this.store = lodashCloneDeep(this.initialValues)
+    this.errors = {}
+    this.validStacks = {}
+    this.validLoadings = {}
     this.refresh()
   }
   has (name: string): boolean {
