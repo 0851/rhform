@@ -141,12 +141,25 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
   }
   setLoading (name: string): void {
     this.validLoadings[name] = true
+    this.refresh()
   }
   unsetLoading (name: string): void {
     this.validLoadings[name] = false
+    this.refresh()
   }
   isLoading (name: string): boolean {
     return !!this.validLoadings[name]
+  }
+  setError (name: string, msg: string): void {
+    lodashSet(this.errors, `${name}`, msg)
+    this.refresh()
+  }
+  unsetError (name: string): void {
+    lodashUnset(this.errors, `${name}`)
+    this.refresh()
+  }
+  error (name: string): ValidResult {
+    return lodashGet(this.errors, `${name}`)
   }
   private async fnTimeOut<T extends any> (value: Promise<T>, fn: any, time: number) {
     let res: any = PromiseTimeout<T>(fn, time).catch((e) => { throw e })
@@ -211,7 +224,7 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
       return error
     }
   }
-  validate = debounce(async (name?: string, refresh?: boolean, silent?: boolean): Promise<ValidResult> => {
+  validate = debounce(async (name?: string, silent?: boolean): Promise<ValidResult> => {
     const names = Object.keys(this.rules).filter((item) => {
       if (!name) return true
       return item === name
@@ -236,19 +249,6 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
       if (silent !== true) {
         throw e
       }
-    } finally {
-      if (refresh !== false) {
-        this.refresh()
-      }
     }
   }, 88, { leading: true, trailing: true })
-  setError (name: string, msg: string): void {
-    lodashSet(this.errors, `${name}`, msg)
-  }
-  unsetError (name: string): void {
-    lodashUnset(this.errors, `${name}`)
-  }
-  error (name: string): ValidResult {
-    return lodashGet(this.errors, `${name}`)
-  }
 }

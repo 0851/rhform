@@ -440,7 +440,6 @@ interface FormStoreInstance<T extends Object = any> {
   validate: DebouncedFunc<
     (
       name?: string | undefined,
-      refresh?: boolean | undefined,
       silent?: boolean | undefined
     ) => Promise<ValidResult>
   >

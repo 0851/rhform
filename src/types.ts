@@ -45,7 +45,7 @@ export interface FormStoreInstance<T extends Object = any> {
   setLoading (name: string): void
   unsetLoading (name: string): void
   isLoading (name: string): boolean
-  validate: DebouncedFunc<(name?: string | undefined, refresh?: boolean | undefined, silent?: boolean | undefined) => Promise<ValidResult>>;
+  validate: DebouncedFunc<(name?: string | undefined, silent?: boolean | undefined) => Promise<ValidResult>>;
   setError (name: string, msg: string): void;
   unsetError (name: string): void;
   error (name: string): ValidResult;

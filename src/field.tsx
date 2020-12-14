@@ -104,14 +104,14 @@ export function FormField (props: FormFieldProps) {
       return
     }
     try {
-      store.validate(name, true, true)
+      store.validate(name, true)
     } catch (error) { }
   }, [store, name, valueGetter])
 
   if (validateTrigger !== 'onChange' && !!validateTrigger) {
     newProps[validateTrigger] = () => {
       try {
-        store.validate(name, true, true)
+        store.validate(name, true)
       } catch (error) { }
     }
   }
