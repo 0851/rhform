@@ -57,19 +57,23 @@ export type ValueGetter = (
   props: FormFieldProps
 ) => any
 
-export type AS<P> =
+export type AS<P = any> =
   | 'input' | 'select' | 'textarea'
   | FunctionComponent<P> | ComponentClass<P> | string
+  | React.ComponentType<P>
+  | React.ComponentType
+  | React.ForwardRefExoticComponent<P>
+  | ((props: P) => JSX.Element)
 
 export type FormFieldProps =
   GenericFieldHTMLAttributes
   & FormOptions
   & {
     name: string;
-    as?: AS<Partial<FormFieldProps>>;
+    as?: AS<any>;
     valueKey?: string | undefined;
     valueGetter?: ValueGetter;
-    loadingAs?: FunctionComponent<any> | ComponentClass<any> | string;
+    loadingAs?: AS<any>;
     type?: string;
     value?: any;
     multiple?: boolean;
@@ -103,6 +107,7 @@ export interface FormProps extends FormOptions {
   store: FormStoreInstance
   as?: React.ComponentType<any>
   | string
+  | ((props: any) => JSX.Element)
   | React.ComponentType
   | React.ForwardRefExoticComponent<any>;
   [key: string]: any

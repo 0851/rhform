@@ -46,13 +46,13 @@ export interface FormStoreInstance<T extends Object = any> {
     error(name: string): ValidResult;
 }
 export declare type ValueGetter = (e: ChangeEvent, store: FormStoreInstance, props: FormFieldProps) => any;
-export declare type AS<P> = 'input' | 'select' | 'textarea' | FunctionComponent<P> | ComponentClass<P> | string;
+export declare type AS<P = any> = 'input' | 'select' | 'textarea' | FunctionComponent<P> | ComponentClass<P> | string | React.ComponentType<P> | React.ComponentType | React.ForwardRefExoticComponent<P> | ((props: P) => JSX.Element);
 export declare type FormFieldProps = GenericFieldHTMLAttributes & FormOptions & {
     name: string;
-    as?: AS<Partial<FormFieldProps>>;
+    as?: AS<any>;
     valueKey?: string | undefined;
     valueGetter?: ValueGetter;
-    loadingAs?: FunctionComponent<any> | ComponentClass<any> | string;
+    loadingAs?: AS<any>;
     type?: string;
     value?: any;
     multiple?: boolean;
@@ -85,7 +85,7 @@ export interface FormProps extends FormOptions {
     onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
     onReset?: (e: React.FormEvent<HTMLFormElement>) => void;
     store: FormStoreInstance;
-    as?: React.ComponentType<any> | string | React.ComponentType | React.ForwardRefExoticComponent<any>;
+    as?: React.ComponentType<any> | string | ((props: any) => JSX.Element) | React.ComponentType | React.ForwardRefExoticComponent<any>;
     [key: string]: any;
 }
 export interface FormItemProps extends FormOptions {
