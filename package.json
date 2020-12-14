@@ -20,7 +20,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "rollup --compact -c && tsc --emitDeclarationOnly && git commit -am 'chore(build):  --other=build'",
+    "build": "rollup --compact -c && tsc --emitDeclarationOnly && git add . && git commit -am 'chore(build):  --other=build'",
     "release": "npm run build && npm run release-patch",
     "prelease": "npm version prerelease && git push --tags --force && git push && npm publish --access public",
     "release-patch": "npm version patch && git push --tags && git push && npm publish --access public",
