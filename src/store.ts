@@ -187,8 +187,10 @@ export const FormStore: FormStoreConstructor = class FormStore<T extends Object 
             this.unsetError(name)
             resolve(res)
           } else {
-            let message = isString(res) ? res : res?.message
-            this.setError(name, `${message}`)
+            let message = isString(res) ? res : (res?.message || res)
+            if (message) {
+              this.setError(name, `${message}`)
+            }
             reject(res)
           }
         }
